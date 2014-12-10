@@ -206,7 +206,7 @@ messageOrGroupClass:Any.Type,
             output.writeUInt64(fieldNumber, value:downCastValue)
         
         case .ExtensionTypeBytes:
-            var downCastValue = value as [Byte]
+            var downCastValue = value as NSData
             output.writeData(fieldNumber, value:downCastValue)
         
         case .ExtensionTypeString:
@@ -295,7 +295,7 @@ messageOrGroupClass:Any.Type,
             output.writeUInt64NoTag(downCastValue)
         
         case .ExtensionTypeBytes:
-            var downCastValue = value as [Byte]
+            var downCastValue = value as NSData
             output.writeDataNoTag(downCastValue)
 
         case .ExtensionTypeString:
@@ -376,7 +376,7 @@ messageOrGroupClass:Any.Type,
            return WireFormat.computeUInt64Size(fieldNumber, value:downCastValue)
             
         case .ExtensionTypeBytes:
-            var downCastValue = value as [Byte]
+            var downCastValue = value as NSData
             return WireFormat.computeDataSize(fieldNumber, value:downCastValue)
             
         case .ExtensionTypeString:
@@ -462,7 +462,7 @@ messageOrGroupClass:Any.Type,
             return WireFormat.computeUInt64SizeNoTag(downCastValue)
             
         case .ExtensionTypeBytes:
-            var downCastValue = value as [Byte]
+            var downCastValue = value as NSData
             return WireFormat.computeDataSizeNoTag(downCastValue)
             
         case .ExtensionTypeString:
@@ -583,7 +583,7 @@ messageOrGroupClass:Any.Type,
                 return computeRepeatedSerializedSizeIncludingTags(values)
             case let values as [String]:
                 return computeRepeatedSerializedSizeIncludingTags(values)
-            case let values as Array<Array<Byte>>:
+            case let values as Array<NSData>:
                 return computeRepeatedSerializedSizeIncludingTags(values)
             case let values as [GeneratedMessage]:
                 return computeRepeatedSerializedSizeIncludingTags(values)
@@ -621,7 +621,7 @@ messageOrGroupClass:Any.Type,
                 writeRepeatedValuesIncludingTags(values, output:output)
             case let values as [String]:
                 writeRepeatedValuesIncludingTags(values, output:output)
-            case let values as Array<Array<Byte>>:
+            case let values as Array<NSData>:
                 writeRepeatedValuesIncludingTags(values, output:output)
             case let values as [GeneratedMessage]:
                 writeRepeatedValuesIncludingTags(values, output:output)
@@ -668,7 +668,7 @@ messageOrGroupClass:Any.Type,
                 iterationRepetedValuesForDescription(values, output: &output, indent: indent)
             case let values as [String]:
                 iterationRepetedValuesForDescription(values, output: &output, indent: indent)
-            case let values as Array<Array<Byte>>:
+            case let values as Array<NSData>:
                 iterationRepetedValuesForDescription(values, output: &output, indent: indent)
             case let values as [GeneratedMessage]:
                 iterationRepetedValuesForDescription(values, output: &output, indent: indent)

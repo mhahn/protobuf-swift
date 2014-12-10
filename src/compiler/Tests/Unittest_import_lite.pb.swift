@@ -81,10 +81,10 @@ final internal class ImportMessageLite : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> ImportMessageLite {
+  internal class func parseFromData(data:NSData) -> ImportMessageLite {
     return ImportMessageLite.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> ImportMessageLite {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> ImportMessageLite {
     return ImportMessageLite.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> ImportMessageLite {
@@ -233,20 +233,5 @@ final internal class ImportMessageLiteBuilder : GeneratedMessageBuilder {
   }
 }
 
-//Class extensions: NSData
-
-
-internal extension ImportMessageLite {
-    class func parseFromNSData(data:NSData) -> ImportMessageLite {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return ImportMessageLite.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> ImportMessageLite {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return ImportMessageLite.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

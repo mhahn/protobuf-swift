@@ -268,9 +268,7 @@ internal class CodedOuputStreamTests: XCTestCase
             message.writeToCodedOutputStream(output)
             output.flush()
             var actual = rawOutput.propertyForKey(NSStreamDataWrittenToMemoryStreamKey) as NSData
-            var bytes = [Byte](count:actual.length, repeatedValue:0)
-            actual.getBytes(&bytes)
-            XCTAssertTrue(rawBytes == bytes, "")
+            XCTAssertTrue(rawBytes == actual, "")
         }
   
     }

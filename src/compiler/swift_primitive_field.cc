@@ -54,7 +54,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
                 case FieldDescriptor::TYPE_DOUBLE  : return "Double" ;
                 case FieldDescriptor::TYPE_BOOL    : return "Bool"    ;
                 case FieldDescriptor::TYPE_STRING  : return "String";
-                case FieldDescriptor::TYPE_BYTES   : return "Array<Byte>"  ;
+                case FieldDescriptor::TYPE_BYTES   : return "NSData"  ;
                 default                            : return NULL;
             }
             
@@ -307,22 +307,10 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     }
     
     void PrimitiveFieldGenerator::GenerateHashCodeSource(io::Printer* printer) const {
-        if (descriptor_->type() == FieldDescriptor::TYPE_BYTES) {
-            printer->Print(variables_,
-                           "if has$capitalized_name$ {\n"
-                           "   for oneValue$name$ in $name$ {\n"
-                           "       hashCode = (hashCode &* 31) &+ oneValue$name$.hashValue\n"
-                           "   }\n"
-                           "}\n");
-        }
-        else
-        {
             printer->Print(variables_,
                            "if has$capitalized_name$ {\n"
                            "   hashCode = (hashCode &* 31) &+ $name$.hashValue\n"
                            "}\n");
-        }
-        
     }
     
     RepeatedPrimitiveFieldGenerator::RepeatedPrimitiveFieldGenerator(const FieldDescriptor* descriptor)
@@ -479,22 +467,10 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     
     
     void RepeatedPrimitiveFieldGenerator::GenerateHashCodeSource(io::Printer* printer) const {
-        
-        if (descriptor_->type() == FieldDescriptor::TYPE_BYTES) {
-            printer->Print(variables_,
-                           "for oneValue$name$ in $name$ {\n"
-                           "  for elementOneValue$name$ in oneValue$name$ {\n"
-                           "      hashCode = (hashCode &* 31) &+ elementOneValue$name$.hashValue\n"
-                           "  }\n"
-                           "}\n");
-        }
-        else
-        {
             printer->Print(variables_,
                            "for oneValue$name$ in $name$ {\n"
                            "    hashCode = (hashCode &* 31) &+ oneValue$name$.hashValue\n"
                            "}\n");
-        }
         
     }
 }  // namespace swift

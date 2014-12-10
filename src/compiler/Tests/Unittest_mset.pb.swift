@@ -117,10 +117,10 @@ final internal class TestMessageSet : ExtendableMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestMessageSet {
+  internal class func parseFromData(data:NSData) -> TestMessageSet {
     return TestMessageSet.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestMessageSet {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSet {
     return TestMessageSet.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestMessageSet {
@@ -275,10 +275,10 @@ final internal class TestMessageSetContainer : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestMessageSetContainer {
+  internal class func parseFromData(data:NSData) -> TestMessageSetContainer {
     return TestMessageSetContainer.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestMessageSetContainer {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSetContainer {
     return TestMessageSetContainer.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestMessageSetContainer {
@@ -480,10 +480,10 @@ final internal class TestMessageSetExtension1 : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestMessageSetExtension1 {
+  internal class func parseFromData(data:NSData) -> TestMessageSetExtension1 {
     return TestMessageSetExtension1.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestMessageSetExtension1 {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSetExtension1 {
     return TestMessageSetExtension1.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestMessageSetExtension1 {
@@ -665,10 +665,10 @@ final internal class TestMessageSetExtension2 : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestMessageSetExtension2 {
+  internal class func parseFromData(data:NSData) -> TestMessageSetExtension2 {
     return TestMessageSetExtension2.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestMessageSetExtension2 {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSetExtension2 {
     return TestMessageSetExtension2.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestMessageSetExtension2 {
@@ -827,7 +827,7 @@ final internal class RawMessageSet : GeneratedMessage {
       private(set) var typeId:Int32 = Int32(0)
 
       private(set) var hasMessage:Bool = false
-      private(set) var message:Array<Byte> = [Byte]()
+      private(set) var message:NSData = NSData()
 
       required internal init() {
            super.init()
@@ -867,10 +867,10 @@ final internal class RawMessageSet : GeneratedMessage {
         memoizedSerializedSize = size
         return size
       }
-      internal class func parseFromData(data:[Byte]) -> RawMessageSet.Item {
+      internal class func parseFromData(data:NSData) -> RawMessageSet.Item {
         return RawMessageSet.Item.builder().mergeFromData(data).build()
       }
-      internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> RawMessageSet.Item {
+      internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> RawMessageSet.Item {
         return RawMessageSet.Item.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
       }
       internal class func parseFromInputStream(input:NSInputStream) -> RawMessageSet.Item {
@@ -919,9 +919,7 @@ final internal class RawMessageSet : GeneratedMessage {
                  hashCode = (hashCode &* 31) &+ typeId.hashValue
               }
               if hasMessage {
-                 for oneValuemessage in message {
-                     hashCode = (hashCode &* 31) &+ oneValuemessage.hashValue
-                 }
+                 hashCode = (hashCode &* 31) &+ message.hashValue
               }
               hashCode = (hashCode &* 31) &+  unknownFields.hashValue
               return hashCode
@@ -977,7 +975,7 @@ final internal class RawMessageSet : GeneratedMessage {
                 return builderResult.hasMessage
            }
       }
-      var message:Array<Byte> {
+      var message:NSData {
            get {
                 return builderResult.message
            }
@@ -988,7 +986,7 @@ final internal class RawMessageSet : GeneratedMessage {
       }
       internal func clearMessage() -> RawMessageSet.ItemBuilder{
            builderResult.hasMessage = false
-           builderResult.message = [Byte]()
+           builderResult.message = NSData()
            return self
       }
       override internal var internalGetResult:GeneratedMessage {
@@ -1093,10 +1091,10 @@ final internal class RawMessageSet : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> RawMessageSet {
+  internal class func parseFromData(data:NSData) -> RawMessageSet {
     return RawMessageSet.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> RawMessageSet {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> RawMessageSet {
     return RawMessageSet.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> RawMessageSet {
@@ -1244,80 +1242,5 @@ final internal class RawMessageSetBuilder : GeneratedMessageBuilder {
   }
 }
 
-//Class extensions: NSData
-
-
-internal extension TestMessageSet {
-    class func parseFromNSData(data:NSData) -> TestMessageSet {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSet.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSet {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSet.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension TestMessageSetContainer {
-    class func parseFromNSData(data:NSData) -> TestMessageSetContainer {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSetContainer.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSetContainer {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSetContainer.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension TestMessageSetExtension1 {
-    class func parseFromNSData(data:NSData) -> TestMessageSetExtension1 {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSetExtension1.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSetExtension1 {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSetExtension1.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension TestMessageSetExtension2 {
-    class func parseFromNSData(data:NSData) -> TestMessageSetExtension2 {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSetExtension2.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessageSetExtension2 {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessageSetExtension2.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension RawMessageSet.Item {
-    class func parseFromNSData(data:NSData) -> RawMessageSet.Item {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return RawMessageSet.Item.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> RawMessageSet.Item {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return RawMessageSet.Item.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension RawMessageSet {
-    class func parseFromNSData(data:NSData) -> RawMessageSet {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return RawMessageSet.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> RawMessageSet {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return RawMessageSet.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

@@ -53,7 +53,7 @@ final public class ProtoPerfomance : GeneratedMessage {
   public private(set) var str:String = ""
 
   public private(set) var hasBytes:Bool = false
-  public private(set) var bytes:Array<Byte> = [Byte]()
+  public private(set) var bytes:NSData = NSData()
 
   public private(set) var hasDescription:Bool = false
   public private(set) var description_:String = ""
@@ -132,10 +132,10 @@ final public class ProtoPerfomance : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  public class func parseFromData(data:[Byte]) -> ProtoPerfomance {
+  public class func parseFromData(data:NSData) -> ProtoPerfomance {
     return ProtoPerfomance.builder().mergeFromData(data).build()
   }
-  public class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> ProtoPerfomance {
+  public class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> ProtoPerfomance {
     return ProtoPerfomance.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   public class func parseFromInputStream(input:NSInputStream) -> ProtoPerfomance {
@@ -211,9 +211,7 @@ final public class ProtoPerfomance : GeneratedMessage {
              hashCode = (hashCode &* 31) &+ str.hashValue
           }
           if hasBytes {
-             for oneValuebytes in bytes {
-                 hashCode = (hashCode &* 31) &+ oneValuebytes.hashValue
-             }
+             hashCode = (hashCode &* 31) &+ bytes.hashValue
           }
           if hasDescription {
              hashCode = (hashCode &* 31) &+ description_.hashValue
@@ -348,7 +346,7 @@ final public class ProtoPerfomanceBuilder : GeneratedMessageBuilder {
             return builderResult.hasBytes
        }
   }
-  public var bytes:Array<Byte> {
+  public var bytes:NSData {
        get {
             return builderResult.bytes
        }
@@ -359,7 +357,7 @@ final public class ProtoPerfomanceBuilder : GeneratedMessageBuilder {
   }
   public func clearBytes() -> ProtoPerfomanceBuilder{
        builderResult.hasBytes = false
-       builderResult.bytes = [Byte]()
+       builderResult.bytes = NSData()
        return self
   }
   public var hasDescription:Bool {
@@ -472,20 +470,5 @@ final public class ProtoPerfomanceBuilder : GeneratedMessageBuilder {
   }
 }
 
-//Class extensions: NSData
-
-
-public extension ProtoPerfomance {
-    class func parseFromNSData(data:NSData) -> ProtoPerfomance {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return ProtoPerfomance.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> ProtoPerfomance {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return ProtoPerfomance.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

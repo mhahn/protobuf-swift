@@ -95,10 +95,10 @@ final internal class TestMessage : ExtendableMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestMessage {
+  internal class func parseFromData(data:NSData) -> TestMessage {
     return TestMessage.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestMessage {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessage {
     return TestMessage.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestMessage {
@@ -250,20 +250,5 @@ final internal class TestMessageBuilder : ExtendableMessageBuilder {
   }
 }
 
-//Class extensions: NSData
-
-
-internal extension TestMessage {
-    class func parseFromNSData(data:NSData) -> TestMessage {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessage.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestMessage {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestMessage.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

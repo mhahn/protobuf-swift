@@ -63,19 +63,17 @@ class CodedInputStreamTests: XCTestCase
     
     func assertReadVarint(data:NSData, value:Int64)
     {
-        var dataByte:[Byte] = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&dataByte)
         
         var shift = WireFormat.logicalRightShift64(value: value, spaces: 31)
         if (shift == 0)
         {
-            var input1:CodedInputStream = CodedInputStream(data:dataByte)
+            var input1:CodedInputStream = CodedInputStream(data:data)
             var result = input1.readRawVarint32()
             XCTAssertTrue(Int32(value) == result, "")
 
         }
 
-        var input2:CodedInputStream = CodedInputStream(data:dataByte)
+        var input2:CodedInputStream = CodedInputStream(data:data)
         
         XCTAssertTrue(value == input2.readRawVarint64(), "")
     
@@ -114,7 +112,7 @@ class CodedInputStreamTests: XCTestCase
         var dataByte:[Byte] = [Byte](count: data.length/sizeof(Byte), repeatedValue: 0)
         data.getBytes(&dataByte)
         
-        var input:CodedInputStream = CodedInputStream(data:dataByte)
+        var input:CodedInputStream = CodedInputStream(data:data)
         var readRes = input.readRawLittleEndian32()
         XCTAssertTrue(value == readRes, "")
         for (var blockSize:Int32 = 1; blockSize <= 16; blockSize *= 2)
@@ -134,7 +132,7 @@ class CodedInputStreamTests: XCTestCase
         var dataByte:[Byte] = [Byte](count: data.length/sizeof(Byte), repeatedValue: 0)
         data.getBytes(&dataByte)
         
-        var input:CodedInputStream = CodedInputStream(data:dataByte)
+        var input:CodedInputStream = CodedInputStream(data:data)
         XCTAssertTrue(value == input.readRawLittleEndian64(), "")
         for (var blockSize:Int32 = 1; blockSize <= 16; blockSize *= 2)
         {
@@ -152,9 +150,9 @@ class CodedInputStreamTests: XCTestCase
         var dataByte:[Byte] = [Byte](count: data.length, repeatedValue: 0)
         data.getBytes(&dataByte)
         
-        var input:CodedInputStream = CodedInputStream(data:dataByte)
+        var input:CodedInputStream = CodedInputStream(data:data)
         input.readRawVarint32()
-        var input2:CodedInputStream = CodedInputStream(data:dataByte)
+        var input2:CodedInputStream = CodedInputStream(data:data)
         input2.readRawVarint64()
         
     
@@ -236,13 +234,12 @@ class CodedInputStreamTests: XCTestCase
         output.writeRawVarint32(tag)
         output.writeRawVarint32(0x7FFFFFFF)
         var bytes:[Byte] = [Byte](count: 32, repeatedValue: 0)
-        output.writeRawData(bytes)
+        var datas = NSData(bytes: bytes, length: 32)
+        output.writeRawData(datas)
         output.flush()
     
         var data:NSData = rawOutput.propertyForKey(NSStreamDataWrittenToMemoryStreamKey) as NSData
-        var bytes2:[Byte] = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes2)
-        var input:CodedInputStream = CodedInputStream(data: bytes2)
+        var input:CodedInputStream = CodedInputStream(data: data)
         XCTAssertTrue(tag == input.readTag(), "")
     
     }
@@ -252,12 +249,13 @@ class CodedInputStreamTests: XCTestCase
         
         var message = TestUtilities.allSet()
         var rawBytes = message.data()
-        XCTAssertTrue(Int32(rawBytes.count) == message.serializedSize(), "")
+        let lengthRaw = Int32(rawBytes.length)
+        let lengthSize = message.serializedSize()
+        XCTAssertTrue(lengthRaw == lengthSize, "")
     
         var message2 = TestAllTypes.parseFromData(rawBytes)
         TestUtilities.assertAllFieldsSet(message2)
-        var data:NSData = bytesArray(rawBytes)
-        var stream:NSInputStream = NSInputStream(data: data)
+        var stream:NSInputStream = NSInputStream(data: rawBytes)
         var codedStream  = CodedInputStream(inputStream:stream)
         var message3 = TestAllTypes.parseFromCodedInputStream(codedStream)
         TestUtilities.assertAllFieldsSet(message3)
@@ -265,7 +263,7 @@ class CodedInputStreamTests: XCTestCase
         
         for (var blockSize:Int32 = 1; blockSize < 256; blockSize *= 2) {
             var smallblock:SmallBlockInputStream = SmallBlockInputStream()
-            smallblock.setup(data: data, blocksSize: blockSize)
+            smallblock.setup(data: rawBytes, blocksSize: blockSize)
             message2 = TestAllTypes.parseFromInputStream(smallblock)
             TestUtilities.assertAllFieldsSet(message2)
         }
@@ -295,18 +293,18 @@ class CodedInputStreamTests: XCTestCase
     func testReadHugeBlob()
     {
         // Allocate and initialize a 1MB blob.
-        var blob = [Byte](count:Int(1 << 20), repeatedValue:0)
-        for (var i:Int = 0; Int(i) < blob.count; i++) {
-            blob[i] = 1
+        var blob = NSMutableData(length:1 << 20)!
+        for (var i:Int = 0; i < blob.length; i++) {
+            var pointer = UnsafeMutablePointer<Byte>(blob.mutableBytes)
+            var bpointer = UnsafeMutableBufferPointer(start: pointer, count: blob.length)
+            bpointer[i] = Byte(1)
         }
         var builder = TestAllTypes.builder()
         TestUtilities.setAllFields(builder)
     
         builder.optionalBytes = blob
         var message = builder.build()
-        var data = NSMutableData()
-        var bytesArray = message.data()
-        data.appendBytes(&bytesArray, length:message.data().count)
+        var data = message.data()
         var message2 = TestAllTypes.parseFromInputStream(NSInputStream(data:data))
         XCTAssertTrue(message.optionalBytes == message2.optionalBytes, "")
         

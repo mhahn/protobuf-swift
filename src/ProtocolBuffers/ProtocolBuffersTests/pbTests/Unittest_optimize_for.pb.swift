@@ -207,10 +207,10 @@ final internal class TestOptimizedForSize : ExtendableMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestOptimizedForSize {
+  internal class func parseFromData(data:NSData) -> TestOptimizedForSize {
     return TestOptimizedForSize.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestOptimizedForSize {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestOptimizedForSize {
     return TestOptimizedForSize.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestOptimizedForSize {
@@ -508,10 +508,10 @@ final internal class TestRequiredOptimizedForSize : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestRequiredOptimizedForSize {
+  internal class func parseFromData(data:NSData) -> TestRequiredOptimizedForSize {
     return TestRequiredOptimizedForSize.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestRequiredOptimizedForSize {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestRequiredOptimizedForSize {
     return TestRequiredOptimizedForSize.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestRequiredOptimizedForSize {
@@ -694,10 +694,10 @@ final internal class TestOptionalOptimizedForSize : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> TestOptionalOptimizedForSize {
+  internal class func parseFromData(data:NSData) -> TestOptionalOptimizedForSize {
     return TestOptionalOptimizedForSize.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> TestOptionalOptimizedForSize {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestOptionalOptimizedForSize {
     return TestOptionalOptimizedForSize.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> TestOptionalOptimizedForSize {
@@ -866,44 +866,5 @@ final internal class TestOptionalOptimizedForSizeBuilder : GeneratedMessageBuild
   }
 }
 
-//Class extensions: NSData
-
-
-internal extension TestOptimizedForSize {
-    class func parseFromNSData(data:NSData) -> TestOptimizedForSize {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestOptimizedForSize.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestOptimizedForSize {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestOptimizedForSize.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension TestRequiredOptimizedForSize {
-    class func parseFromNSData(data:NSData) -> TestRequiredOptimizedForSize {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestRequiredOptimizedForSize.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestRequiredOptimizedForSize {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestRequiredOptimizedForSize.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
-internal extension TestOptionalOptimizedForSize {
-    class func parseFromNSData(data:NSData) -> TestOptionalOptimizedForSize {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestOptionalOptimizedForSize.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> TestOptionalOptimizedForSize {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return TestOptionalOptimizedForSize.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

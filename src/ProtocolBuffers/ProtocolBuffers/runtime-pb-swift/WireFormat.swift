@@ -169,9 +169,9 @@ public enum WireFormat:Int32
         var size:Int32  = value.serializedSize()
         return computeRawVarint32Size(size) + size
     }
-    public static func computeDataSizeNoTag(value:[Byte]) ->Int32
+    public static func computeDataSizeNoTag(value:NSData) ->Int32
     {
-        return computeRawVarint32Size(Int32(value.count)) + Int32(value.count)
+        return computeRawVarint32Size(Int32(value.length)) + Int32(value.length)
     }
     
     public static func computeUInt32SizeNoTag(value:UInt32) -> Int32
@@ -268,7 +268,7 @@ public enum WireFormat:Int32
     }
     
     
-    public static func computeDataSize(fieldNumber:Int32, value:[Byte]) -> Int32
+    public static func computeDataSize(fieldNumber:Int32, value:NSData) -> Int32
     {
         return computeTagSize(fieldNumber) + computeDataSizeNoTag(value)
     }
@@ -354,9 +354,9 @@ public enum WireFormat:Int32
         return computeTagSize(WireFormatMessage.WireFormatMessageSetItem.rawValue) * 2 + computeUInt32Size(WireFormatMessage.WireFormatMessageSetTypeId.rawValue, value: UInt32(fieldNumber)) + computeMessageSize(WireFormatMessage.WireFormatMessageSetMessage.rawValue, value: value)
     }
     
-    public static func computeRawMessageSetExtensionSize(fieldNumber:Int32, value:[Byte]?) -> Int32
+    public static func computeRawMessageSetExtensionSize(fieldNumber:Int32, value:NSData) -> Int32
     {
-        return computeTagSize(WireFormatMessage.WireFormatMessageSetItem.rawValue) * 2 + computeUInt32Size(WireFormatMessage.WireFormatMessageSetTypeId.rawValue, value: UInt32(fieldNumber)) + computeDataSize(WireFormatMessage.WireFormatMessageSetMessage.rawValue, value: value!)
+        return computeTagSize(WireFormatMessage.WireFormatMessageSetItem.rawValue) * 2 + computeUInt32Size(WireFormatMessage.WireFormatMessageSetTypeId.rawValue, value: UInt32(fieldNumber)) + computeDataSize(WireFormatMessage.WireFormatMessageSetMessage.rawValue, value: value)
     }
     
 }

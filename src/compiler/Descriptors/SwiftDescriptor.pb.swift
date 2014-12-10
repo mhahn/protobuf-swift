@@ -108,10 +108,10 @@ final public class SwiftFileOptions : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  public class func parseFromData(data:[Byte]) -> SwiftFileOptions {
+  public class func parseFromData(data:NSData) -> SwiftFileOptions {
     return SwiftFileOptions.builder().mergeFromData(data).build()
   }
-  public class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> SwiftFileOptions {
+  public class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> SwiftFileOptions {
     return SwiftFileOptions.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   public class func parseFromInputStream(input:NSInputStream) -> SwiftFileOptions {
@@ -327,20 +327,5 @@ final public class SwiftFileOptionsBuilder : GeneratedMessageBuilder {
   }
 }
 
-//Class extensions: NSData
-
-
-public extension SwiftFileOptions {
-    class func parseFromNSData(data:NSData) -> SwiftFileOptions {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return SwiftFileOptions.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> SwiftFileOptions {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return SwiftFileOptions.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

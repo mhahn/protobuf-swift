@@ -59,10 +59,10 @@ final internal class PublicImportMessage : GeneratedMessage {
     memoizedSerializedSize = size
     return size
   }
-  internal class func parseFromData(data:[Byte]) -> PublicImportMessage {
+  internal class func parseFromData(data:NSData) -> PublicImportMessage {
     return PublicImportMessage.builder().mergeFromData(data).build()
   }
-  internal class func parseFromData(data:[Byte], extensionRegistry:ExtensionRegistry) -> PublicImportMessage {
+  internal class func parseFromData(data:NSData, extensionRegistry:ExtensionRegistry) -> PublicImportMessage {
     return PublicImportMessage.builder().mergeFromData(data, extensionRegistry:extensionRegistry).build()
   }
   internal class func parseFromInputStream(input:NSInputStream) -> PublicImportMessage {
@@ -211,20 +211,5 @@ final internal class PublicImportMessageBuilder : GeneratedMessageBuilder {
   }
 }
 
-//Class extensions: NSData
-
-
-internal extension PublicImportMessage {
-    class func parseFromNSData(data:NSData) -> PublicImportMessage {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return PublicImportMessage.builder().mergeFromData(bytes).build()
-    }
-    class func parseFromNSData(data:NSData, extensionRegistry:ExtensionRegistry) -> PublicImportMessage {
-        var bytes = [Byte](count: data.length, repeatedValue: 0)
-        data.getBytes(&bytes)
-        return PublicImportMessage.builder().mergeFromData(bytes, extensionRegistry:extensionRegistry).build()
-    }
-}
 
 // @@protoc_insertion_point(global_scope)

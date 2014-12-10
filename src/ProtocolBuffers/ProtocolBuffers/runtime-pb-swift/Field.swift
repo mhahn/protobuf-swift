@@ -27,55 +27,55 @@ public func ==(lhs:Field, rhs:Field) -> Bool
     return check
 }
 
-public func ==(lhs:Array<Array<Byte>>, rhs:Array<Array<Byte>>) -> Bool
-{
-    if lhs.count == rhs.count
-    {
-        for (var i = 0; i < lhs.count; i++)
-        {
-            var lbytes = lhs[i]
-            var rbytes = rhs[i]
-            
-            if lbytes.count == rbytes.count
-            {
-                if lbytes == rbytes
-                {
-                    continue
-                }
-                else
-                {
-                    return false
-                }
-            }
-            else
-            {
-                return false
-            }
-        }
-        return true
-    }
-    return false
-}
-
-
-
-public func ==(lhs:Array<Byte>, rhs:Array<Byte>) -> Bool
-{
-    if lhs.count == rhs.count
-    {
-        for (var i = 0; i < lhs.count; i++)
-        {
-            var lbytes = lhs[i]
-            var rbytes = rhs[i]
-            if lbytes != rbytes
-            {
-                return false
-            }
-        }
-        return true
-    }
-    return false
-}
+//public func ==(lhs:Array<Array<Byte>>, rhs:Array<Array<Byte>>) -> Bool
+//{
+//    if lhs.count == rhs.count
+//    {
+//        for (var i = 0; i < lhs.count; i++)
+//        {
+//            var lbytes = lhs[i]
+//            var rbytes = rhs[i]
+//            
+//            if lbytes.count == rbytes.count
+//            {
+//                if lbytes == rbytes
+//                {
+//                    continue
+//                }
+//                else
+//                {
+//                    return false
+//                }
+//            }
+//            else
+//            {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+//    return false
+//}
+//
+//
+//
+//public func ==(lhs:Array<Byte>, rhs:Array<Byte>) -> Bool
+//{
+//    if lhs.count == rhs.count
+//    {
+//        for (var i = 0; i < lhs.count; i++)
+//        {
+//            var lbytes = lhs[i]
+//            var rbytes = rhs[i]
+//            if lbytes != rbytes
+//            {
+//                return false
+//            }
+//        }
+//        return true
+//    }
+//    return false
+//}
 
 //public protocol FieldOverload
 //{
@@ -112,7 +112,7 @@ final public class Field:Equatable,Hashable
     public var variantArray:Array<Int64>
     public var fixed32Array:Array<UInt32>
     public var fixed64Array:Array<UInt64>
-    public var lengthDelimited:Array<Array<Byte>>
+    public var lengthDelimited:Array<NSData>
     public var groupArray:Array<UnknownFieldSet>
     
   
@@ -123,7 +123,7 @@ final public class Field:Equatable,Hashable
         variantArray = [Int64](count: 0, repeatedValue: 0)
         fixed32Array = [UInt32](count: 0, repeatedValue: 0)
         fixed64Array = [UInt64](count: 0, repeatedValue: 0)
-        lengthDelimited = Array<Array<Byte>>()
+        lengthDelimited = Array<NSData>()
         groupArray = Array<UnknownFieldSet>()
     }
     
@@ -251,10 +251,7 @@ final public class Field:Equatable,Hashable
             }
             for value in lengthDelimited
             {
-                for byteVal in value
-                {
-                    hashCode = (hashCode &* 31) &+ byteVal.hashValue
-                }
+                    hashCode = (hashCode &* 31) &+ value.hashValue
             }
             for value in groupArray
             {
