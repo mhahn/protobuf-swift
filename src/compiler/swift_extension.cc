@@ -56,9 +56,9 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         vars["extended_type"] = ClassName(descriptor_->containing_type());
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
         
-        printer->Print(vars,"$acontrol$ var $containing_type$$name$:ConcreateExtensionField {\n"
+        printer->Print(vars,"$acontrol$ var $containing_type$_$name$:ConcreateExtensionField {\n"
                        "   get {\n"
-                       "       return $root_name$.sharedInstance.$containing_type$$name$Static\n"
+                       "       return $root_name$.sharedInstance.$containing_type$_$name$Static\n"
                        "   }\n"
                        "}\n");
     }
@@ -82,7 +82,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         vars["extended_type"] = ClassName(descriptor_->containing_type());
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
         printer->Print(vars,
-                       "var $containing_type$$name$Static:ConcreateExtensionField\n");
+                       "var $containing_type$_$name$Static:ConcreateExtensionField\n");
     }
     
     void ExtensionGenerator::GenerateMembersSourceExtensions(io::Printer* printer, string fileClass) {
@@ -93,7 +93,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
         printer->Print(vars,
                        "$acontrol$ static func $name$() -> ConcreateExtensionField {\n"
-                       "     return $rootclass_type$.sharedInstance.$containing_type$$name$Static\n"
+                       "     return $rootclass_type$.sharedInstance.$containing_type$_$name$Static\n"
                        "}\n");
     }
     
@@ -104,7 +104,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
         printer->Print(vars,
                        "$acontrol$ class func $name$() -> ConcreateExtensionField {\n"
-                       "     return $containing_type$$name$\n"
+                       "     return $containing_type$_$name$\n"
                        "}\n");
     }
     
@@ -211,12 +211,12 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
             vars["default"] =  DefaultValue(descriptor_);
         }
         
-        printer->Print(vars,"$containing_type$$name$Static = ConcreateExtensionField(type:$extension_type$, extendedClass:$extended_type$.self, fieldNumber: $number$, defaultValue:$default$, messageOrGroupClass:$type$.self, isRepeated:$is_repeated$, isPacked:$is_packed$, isMessageSetWireFormat:$is_wire_format$)\n");
+        printer->Print(vars,"$containing_type$_$name$Static = ConcreateExtensionField(type:$extension_type$, extendedClass:$extended_type$.self, fieldNumber: $number$, defaultValue:$default$, messageOrGroupClass:$type$.self, isRepeated:$is_repeated$, isPacked:$is_packed$, isMessageSetWireFormat:$is_wire_format$)\n");
     }
     
     void ExtensionGenerator::GenerateRegistrationSource(io::Printer* printer) {
         printer->Print(
-                       "registry.addExtension($scope$$name$Static)\n",
+                       "registry.addExtension($scope$_$name$Static)\n",
                        "scope", classname_,
                        "name", UnderscoresToCamelCase(descriptor_));
     }
