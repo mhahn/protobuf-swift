@@ -164,7 +164,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     
     
     string UnderscoresToCamelCase(const FieldDescriptor* field) {
-        return UnderscoresToCamelCase(FieldName(field));
+        return FieldName(field);
     }
     
     
