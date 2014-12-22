@@ -620,6 +620,12 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     }
     
     void MessageGenerator::GenerateParseFromExtensionMethodsSource(io::Printer* printer) {
+
+        //Nested Types
+        for (int i = 0; i < descriptor_->nested_type_count(); i++) {
+            MessageGenerator(descriptor_->nested_type(i)).GenerateParseFromExtensionMethodsSource(printer);
+        }
+
         printer->Print(
                        "$acontrol$ extension $classname$ {\n"
                        "    class func parseFromNSData(data:NSData) -> $classname$ {\n"
@@ -636,8 +642,6 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
                        "classname", ClassName(descriptor_),
                        "acontrol", GetAccessControlType(descriptor_->file()));
     }
-    
-    
     
     void MessageGenerator::GenerateSerializeOneFieldSource(
                                                            io::Printer* printer, const FieldDescriptor* field) {
