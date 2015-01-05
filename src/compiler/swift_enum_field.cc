@@ -106,8 +106,11 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
             printer->Print(variables_,"$acontrol$private(set) var has$capitalized_name$:Bool = false\n");
         }
     }
-    
-    
+
+
+    void EnumFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
+        printer->Print(variables_, "       case \"$name$\": return self.$name$\n");
+    }
     
     
     void EnumFieldGenerator::GenerateInitializationSource(io::Printer* printer) const {
@@ -228,6 +231,11 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     //TODO
     void RepeatedEnumFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
         //    printer->Print(variables_, "var $name$:$type$\n");
+    }
+
+
+    void RepeatedEnumFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
+        printer->Print(variables_, "       case \"$name$\": return $name$\n");
     }
     
     

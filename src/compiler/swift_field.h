@@ -40,6 +40,7 @@ namespace google {
                     
                     virtual void GenerateExtensionSource(io::Printer* printer) const = 0;
                     virtual void GenerateSynthesizeSource(io::Printer* printer) const = 0;
+                    virtual void GenerateSubscriptSource(io::Printer* printer) const = 0;
                     virtual void GenerateInitializationSource(io::Printer* printer) const = 0;
                     virtual void GenerateMembersSource(io::Printer* printer) const = 0;
                     virtual void GenerateBuilderMembersSource(io::Printer* printer) const = 0;
