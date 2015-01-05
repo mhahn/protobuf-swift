@@ -109,6 +109,10 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         }
         
     }
+
+    void MessageFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
+        printer->Print(variables_, "       case \"$name$\": return $name$\n");
+    }
     
     void MessageFieldGenerator::GenerateInitializationSource(io::Printer* printer) const {
     }
@@ -247,6 +251,9 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     
     void RepeatedMessageFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
         
+    }
+
+    void RepeatedMessageFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
     }
     
     

@@ -227,6 +227,10 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
             printer->Print(variables_,"$acontrol$private(set) var $name$:$storage_type$ = $default$\n\n");
         }
     }
+
+    void PrimitiveFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
+        printer->Print(variables_, "       case \"$name$\": return $name$\n");
+    }
     
     
     
@@ -342,6 +346,9 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     
     
     void RepeatedPrimitiveFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
+    }
+
+    void RepeatedPrimitiveFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
     }
     
     

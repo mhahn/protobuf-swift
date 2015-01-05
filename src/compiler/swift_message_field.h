@@ -35,6 +35,7 @@ namespace google {
                     
                     void GenerateExtensionSource(io::Printer* printer) const;
                     void GenerateSynthesizeSource(io::Printer* printer) const;
+                    void GenerateSubscriptSource(io::Printer* printer) const;
                     void GenerateInitializationSource(io::Printer* printer) const;
                     void GenerateMembersSource(io::Printer* printer) const;
                     void GenerateBuilderMembersSource(io::Printer* printer) const;
@@ -63,6 +64,7 @@ namespace google {
                     
                     void GenerateExtensionSource(io::Printer* printer) const;
                     void GenerateSynthesizeSource(io::Printer* printer) const;
+                    void GenerateSubscriptSource(io::Printer* printer) const;
                     void GenerateInitializationSource(io::Printer* printer) const;
                     void GenerateMembersSource(io::Printer* printer) const;
                     void GenerateBuilderMembersSource(io::Printer* printer) const;
