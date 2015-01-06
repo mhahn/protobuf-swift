@@ -283,7 +283,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
 
 
         // Subscript
-        printer->Print("public subscript(key: String) -> Any? {\n"
+        printer->Print("public subscript(key: String) -> AnyObject? {\n"
                 "       switch key {\n");
         for (int i = 0; i < descriptor_->field_count(); i++) {
             field_generators_.get(descriptor_->field(i)).GenerateSubscriptSource(printer);

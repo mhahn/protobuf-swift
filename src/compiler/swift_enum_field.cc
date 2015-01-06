@@ -106,7 +106,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
 
 
     void EnumFieldGenerator::GenerateSubscriptSource(io::Printer* printer) const {
-        printer->Print(variables_, "       case \"$name$\": return self.$name$\n");
+        printer->Print(variables_, "       case \"$name$\": return Int(self.$name$.rawValue)\n");
     }
     
     
