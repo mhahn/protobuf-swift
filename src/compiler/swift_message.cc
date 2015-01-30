@@ -799,14 +799,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         printer->Print("$acontrol$ func mergeFrom(other:$classname$) -> $classname$Builder {\n",
                        "classname", ClassName(descriptor_),
                        "acontrol", GetAccessControlType(descriptor_->file()));
-        // Optimization:  If other is the default instance, we know none of its
-        //   fields are set so we can skip the merge.
         printer->Indent();
-        printer->Print("if (other == $classname$()) {\n"
-                       " return self\n"
-                       "}\n",
-                       "classname", ClassName(descriptor_));
-        
         
         for (int i = 0; i < descriptor_->field_count(); i++) {
             field_generators_.get(descriptor_->field(i)).GenerateMergingCodeSource(printer);
