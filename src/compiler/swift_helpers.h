@@ -56,6 +56,7 @@ namespace google {
                 string FullName(const FileDescriptor* file);
                 string FullName(const vector<string> splitVector);
                 string PackageExtensionName(const vector<string> splitVector);
+                string PackageFieldPrefix(const vector<string> splitVector);
                 ///
                 
                 bool IsBootstrapFile(const FileDescriptor* file);

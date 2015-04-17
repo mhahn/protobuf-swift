@@ -153,7 +153,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     //  }
     
     
-    void MessageGenerator::GenerateStaticVariablesInitialization(io::Printer* printer) {
+    void MessageGenerator::GenerateStaticVariablesInitialization(io::Printer* printer, string packageFieldPrefix) {
         map<string, string> vars;
         vars["identifier"] = UniqueFileScopeIdentifier(descriptor_);
         vars["index"] = SimpleItoa(descriptor_->index());
@@ -163,15 +163,15 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         }
         
         for (int i = 0; i < descriptor_->extension_count(); i++) {
-            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateInitializationSource(printer);
+            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateInitializationSource(printer, packageFieldPrefix);
         }
         for (int i = 0; i < descriptor_->nested_type_count(); i++) {
-            MessageGenerator(descriptor_->nested_type(i)).GenerateStaticVariablesInitialization(printer);
+            MessageGenerator(descriptor_->nested_type(i)).GenerateStaticVariablesInitialization(printer, packageFieldPrefix);
         }
     }
     
     
-    void MessageGenerator::GenerateStaticVariablesSource(io::Printer* printer) {
+    void MessageGenerator::GenerateStaticVariablesSource(io::Printer* printer, string packageFieldPrefix) {
         map<string, string> vars;
         vars["identifier"] = UniqueFileScopeIdentifier(descriptor_);
         vars["index"] = SimpleItoa(descriptor_->index());
@@ -181,14 +181,14 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         }
         
         for (int i = 0; i < descriptor_->extension_count(); i++) {
-            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateFieldsSource(printer);
+            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateFieldsSource(printer, packageFieldPrefix);
         }
         for (int i = 0; i < descriptor_->nested_type_count(); i++) {
-            MessageGenerator(descriptor_->nested_type(i)).GenerateStaticVariablesSource(printer);
+            MessageGenerator(descriptor_->nested_type(i)).GenerateStaticVariablesSource(printer, packageFieldPrefix);
         }
     }
     
-    void MessageGenerator::GenerateGlobalStaticVariablesSource(io::Printer* printer, string rootclass) {
+    void MessageGenerator::GenerateGlobalStaticVariablesSource(io::Printer* printer, string rootclass, string packageFieldPrefix) {
         map<string, string> vars;
         vars["identifier"] = UniqueFileScopeIdentifier(descriptor_);
         vars["index"] = SimpleItoa(descriptor_->index());
@@ -197,10 +197,10 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
             vars["parent"] = UniqueFileScopeIdentifier(descriptor_->containing_type());
         }
         for (int i = 0; i < descriptor_->extension_count(); i++) {
-            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateFieldsGetterSource(printer, rootclass);
+            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateFieldsGetterSource(printer, rootclass, packageFieldPrefix);
         }
         for (int i = 0; i < descriptor_->nested_type_count(); i++) {
-            MessageGenerator(descriptor_->nested_type(i)).GenerateGlobalStaticVariablesSource(printer, rootclass);
+            MessageGenerator(descriptor_->nested_type(i)).GenerateGlobalStaticVariablesSource(printer, rootclass, packageFieldPrefix);
         }
     }
     
@@ -214,20 +214,20 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     }
     
     
-    void MessageGenerator::GenerateExtensionRegistrationSource(io::Printer* printer) {
+    void MessageGenerator::GenerateExtensionRegistrationSource(io::Printer* printer, string packageFieldPrefix) {
         for (int i = 0; i < descriptor_->extension_count(); i++) {
             ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i))
-            .GenerateRegistrationSource(printer);
+            .GenerateRegistrationSource(printer, packageFieldPrefix);
         }
         
         for (int i = 0; i < descriptor_->nested_type_count(); i++) {
             MessageGenerator(descriptor_->nested_type(i))
-            .GenerateExtensionRegistrationSource(printer);
+            .GenerateExtensionRegistrationSource(printer, packageFieldPrefix);
         }
     }
     
     
-    void MessageGenerator::GenerateSource(io::Printer* printer) {
+    void MessageGenerator::GenerateSource(io::Printer* printer, string packageFieldPrefix) {
         
         scoped_array<const FieldDescriptor*> sorted_fields(SortFieldsByType(descriptor_));
         
@@ -251,7 +251,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         for (int i = 0; i < descriptor_->nested_type_count(); i++) {
             printer->Print("\n\n//Nested type declaration start\n\n");
             printer->Indent();
-            MessageGenerator(descriptor_->nested_type(i)).GenerateSource(printer);
+            MessageGenerator(descriptor_->nested_type(i)).GenerateSource(printer, packageFieldPrefix);
             printer->Outdent();
             printer->Print("//Nested type declaration end\n\n");
             
@@ -295,7 +295,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         
         
         for (int i = 0; i < descriptor_->extension_count(); i++) {
-            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateMembersSource(printer);
+            ExtensionGenerator(ClassNameExtensions(descriptor_), descriptor_->extension(i)).GenerateMembersSource(printer, packageFieldPrefix);
         }
         
         for (int i = 0; i < descriptor_->field_count(); i++) {

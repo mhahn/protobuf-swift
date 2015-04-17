@@ -362,6 +362,15 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         return result;
     }
 
+    string PackageFieldPrefix(const vector<string> splitVector)
+    {
+        string result;
+        for (int i = 0; i < splitVector.size(); i++) {
+            result += splitVector[i];
+        }
+        return result;
+    }
+
     string ClassNameWorker(const Descriptor* descriptor) {
         string name;
         if (descriptor->containing_type() != NULL) {

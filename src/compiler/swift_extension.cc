@@ -36,7 +36,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
     }
     
     
-    void ExtensionGenerator::GenerateFieldsGetterSource(io::Printer* printer, string rootclassname) {
+    void ExtensionGenerator::GenerateFieldsGetterSource(io::Printer* printer, string rootclassname, string packageFieldPrefix) {
         map<string, string> vars;
         vars["name"] = UnderscoresToCamelCase(descriptor_);
         ////
@@ -44,6 +44,7 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         
         ////
         vars["root_name"] = rootclassname;
+        vars["package_field_prefix"] = packageFieldPrefix;
         
         SwiftType swift_type = GetSwiftType(descriptor_);
         string singular_type;
@@ -59,17 +60,18 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         vars["extended_type"] = ClassName(descriptor_->containing_type());
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
         
-        printer->Print(vars,"$acontrol$ var $containing_type$$name$:ConcreateExtensionField {\n"
+        printer->Print(vars,"$acontrol$ var $package_field_prefix$$containing_type$$name$:ConcreateExtensionField {\n"
                        "   get {\n"
-                       "       return $root_name$.sharedInstance.$containing_type$$name$Static\n"
+                       "       return $root_name$.sharedInstance.$package_field_prefix$$containing_type$$name$Static\n"
                        "   }\n"
                        "}\n");
     }
     
-    void ExtensionGenerator::GenerateFieldsSource(io::Printer* printer) {
+    void ExtensionGenerator::GenerateFieldsSource(io::Printer* printer, string packageFieldPrefix) {
         map<string, string> vars;
         vars["name"] = UnderscoresToCamelCase(descriptor_);
         vars["containing_type"] = classname_;
+        vars["package_field_prefix"] = packageFieldPrefix;
         
         SwiftType swift_type = GetSwiftType(descriptor_);
         string singular_type;
@@ -85,38 +87,41 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
         vars["extended_type"] = ClassName(descriptor_->containing_type());
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
         printer->Print(vars,
-                       "var $containing_type$$name$Static:ConcreateExtensionField\n");
+                       "var $package_field_prefix$$containing_type$$name$Static:ConcreateExtensionField\n");
     }
     
-    void ExtensionGenerator::GenerateMembersSourceExtensions(io::Printer* printer, string fileClass) {
+    void ExtensionGenerator::GenerateMembersSourceExtensions(io::Printer* printer, string fileClass, string packageFieldPrefix) {
         map<string, string> vars;
         vars["name"] = UnderscoresToCamelCase(descriptor_);
         vars["containing_type"] = classname_;
         vars["rootclass_type"] = fileClass;
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
+        vars["package_field_prefix"] = packageFieldPrefix;
         printer->Print(vars,
                        "$acontrol$ static func $name$() -> ConcreateExtensionField {\n"
-                       "     return $rootclass_type$.sharedInstance.$containing_type$$name$Static\n"
+                       "     return $rootclass_type$.sharedInstance.$package_field_prefix$$containing_type$$name$Static\n"
                        "}\n");
     }
     
-    void ExtensionGenerator::GenerateMembersSource(io::Printer* printer) {
+    void ExtensionGenerator::GenerateMembersSource(io::Printer* printer, string packageFieldPrefix) {
         map<string, string> vars;
         vars["name"] = UnderscoresToCamelCase(descriptor_);
         vars["containing_type"] = classname_;
         vars["acontrol"] = GetAccessControlType(descriptor_->file());
+        vars["package_field_prefix"] = packageFieldPrefix;
         printer->Print(vars,
                        "$acontrol$ class func $name$() -> ConcreateExtensionField {\n"
-                       "     return $containing_type$$name$\n"
+                       "     return $package_field_prefix$$containing_type$$name$\n"
                        "}\n");
     }
     
-    void ExtensionGenerator::GenerateInitializationSource(io::Printer* printer) {
+    void ExtensionGenerator::GenerateInitializationSource(io::Printer* printer, string packageFieldPrefix) {
         map<string, string> vars;
         vars["name"] = UnderscoresToCamelCase(descriptor_);
         vars["containing_type"] = classname_;
         vars["extended_type"] = ClassName(descriptor_->containing_type());
         vars["number"] = SimpleItoa(descriptor_->number());
+        vars["package_field_prefix"] = packageFieldPrefix;
         
         const bool isPacked = descriptor_->options().packed();
         vars["is_repeated"] = descriptor_->is_repeated() ? "true" : "false";
@@ -214,12 +219,13 @@ namespace google { namespace protobuf { namespace compiler { namespace swift {
             vars["default"] =  DefaultValue(descriptor_);
         }
         
-        printer->Print(vars,"$containing_type$$name$Static = ConcreateExtensionField(type:$extension_type$, extendedClass:$extended_type$.self, fieldNumber: $number$, defaultValue:$default$, messageOrGroupClass:$type$.self, isRepeated:$is_repeated$, isPacked:$is_packed$, isMessageSetWireFormat:$is_wire_format$)\n");
+        printer->Print(vars,"$package_field_prefix$$containing_type$$name$Static = ConcreateExtensionField(type:$extension_type$, extendedClass:$extended_type$.self, fieldNumber: $number$, defaultValue:$default$, messageOrGroupClass:$type$.self, isRepeated:$is_repeated$, isPacked:$is_packed$, isMessageSetWireFormat:$is_wire_format$)\n");
     }
     
-    void ExtensionGenerator::GenerateRegistrationSource(io::Printer* printer) {
+    void ExtensionGenerator::GenerateRegistrationSource(io::Printer* printer, string packageFieldExtension) {
         printer->Print(
-                       "registry.addExtension($scope$$name$Static)\n",
+                       "registry.addExtension($package_field_extension$$scope$$name$Static)\n",
+                       "package_field_extension", packageFieldExtension,
                        "scope", classname_,
                        "name", UnderscoresToCamelCase(descriptor_));
     }

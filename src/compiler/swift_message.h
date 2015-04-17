@@ -40,13 +40,13 @@ namespace google {
                     explicit MessageGenerator(const Descriptor* descriptor);
                     ~MessageGenerator();
                     
-                    void GenerateStaticVariablesInitialization(io::Printer* printer);
-                    void GenerateStaticVariablesSource(io::Printer* printer);
-                    void GenerateSource(io::Printer* printer);
+                    void GenerateStaticVariablesInitialization(io::Printer* printer, string packageFieldPrefix);
+                    void GenerateStaticVariablesSource(io::Printer* printer, string packageFieldPrefix);
+                    void GenerateSource(io::Printer* printer, string packageFieldPrefix);
                     void GenerateMessageIsEqualSource(io::Printer* printer);
-                    void GenerateExtensionRegistrationSource(io::Printer* printer);
+                    void GenerateExtensionRegistrationSource(io::Printer* printer, string packageFieldPrefix);
                     void DetermineDependencies(set<string>* dependencies);
-                    void GenerateGlobalStaticVariablesSource(io::Printer* printer, string rootclass);
+                    void GenerateGlobalStaticVariablesSource(io::Printer* printer, string rootclass, string packageFieldPrefix);
                 private:
                     
                     void GenerateMessageSerializationMethodsSource(io::Printer* printer);

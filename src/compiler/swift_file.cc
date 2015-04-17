@@ -47,6 +47,7 @@ namespace google { namespace protobuf { namespace compiler {namespace swift {
         FileGenerator file_generator(file_);
 
         vector<string> tokens = FullNameSplit(file_->package());
+        string packageFieldPrefix = PackageFieldPrefix(tokens);
         
         
         for (int i = 0; i < file_->message_type_count(); i++) {
@@ -59,11 +60,11 @@ namespace google { namespace protobuf { namespace compiler {namespace swift {
         
         //fields
         for (int i = 0; i < file_->extension_count(); i++) {
-            ExtensionGenerator(ExtensionFileClassName(file_), file_->extension(i)).GenerateFieldsGetterSource(printer, FileClassName(file_));
+            ExtensionGenerator(ExtensionFileClassName(file_), file_->extension(i)).GenerateFieldsGetterSource(printer, FileClassName(file_), packageFieldPrefix);
         }
         
         for (int i = 0; i < file_->message_type_count(); i++) {
-            MessageGenerator(file_->message_type(i)).GenerateGlobalStaticVariablesSource(printer, FileClassName(file_));
+            MessageGenerator(file_->message_type(i)).GenerateGlobalStaticVariablesSource(printer, FileClassName(file_), packageFieldPrefix);
         }
         
         
@@ -93,12 +94,12 @@ namespace google { namespace protobuf { namespace compiler {namespace swift {
                        "acontrol", GetAccessControlType(file_));
         
         for (int i = 0; i < file_->extension_count(); i++) {
-            ExtensionGenerator(classname_, file_->extension(i)).GenerateFieldsSource(printer);
+            ExtensionGenerator(classname_, file_->extension(i)).GenerateFieldsSource(printer, packageFieldPrefix);
         }
         
         
         for (int i = 0; i < file_->message_type_count(); i++) {
-            MessageGenerator(file_->message_type(i)).GenerateStaticVariablesSource(printer);
+            MessageGenerator(file_->message_type(i)).GenerateStaticVariablesSource(printer, packageFieldPrefix);
         }
         
         //TODO
@@ -112,11 +113,11 @@ namespace google { namespace protobuf { namespace compiler {namespace swift {
         
         
         for (int i = 0; i < file_->extension_count(); i++) {
-            ExtensionGenerator(classname_, file_->extension(i)).GenerateInitializationSource(printer);
+            ExtensionGenerator(classname_, file_->extension(i)).GenerateInitializationSource(printer, packageFieldPrefix);
         }
         
         for (int i = 0; i < file_->message_type_count(); i++) {
-            MessageGenerator(file_->message_type(i)).GenerateStaticVariablesInitialization(printer);
+            MessageGenerator(file_->message_type(i)).GenerateStaticVariablesInitialization(printer, packageFieldPrefix);
         }
         
         printer->Print("extensionRegistry = ExtensionRegistry()\n"
@@ -136,17 +137,17 @@ namespace google { namespace protobuf { namespace compiler {namespace swift {
         
         printer->Indent();
         for (int i = 0; i < file_->extension_count(); i++) {
-            ExtensionGenerator(classname_, file_->extension(i)).GenerateRegistrationSource(printer);
+            ExtensionGenerator(classname_, file_->extension(i)).GenerateRegistrationSource(printer, packageFieldPrefix);
         }
         
         for (int i = 0; i < file_->message_type_count(); i++) {
-            MessageGenerator(file_->message_type(i)).GenerateExtensionRegistrationSource(printer);
+            MessageGenerator(file_->message_type(i)).GenerateExtensionRegistrationSource(printer, packageFieldPrefix);
         }
         printer->Outdent();
         printer->Print("}\n");
         
         for (int i = 0; i < file_->extension_count(); i++) {
-            ExtensionGenerator(classname_, file_->extension(i)).GenerateMembersSourceExtensions(printer,classname_);
+            ExtensionGenerator(classname_, file_->extension(i)).GenerateMembersSourceExtensions(printer, classname_, packageFieldPrefix);
         }
         
         printer->Outdent();
@@ -160,7 +161,7 @@ namespace google { namespace protobuf { namespace compiler {namespace swift {
         
         
         for (int i = 0; i < file_->message_type_count(); i++) {
-            MessageGenerator(file_->message_type(i)).GenerateSource(printer);
+            MessageGenerator(file_->message_type(i)).GenerateSource(printer, packageFieldPrefix);
         }
         
        if (tokens.size() > 0) {

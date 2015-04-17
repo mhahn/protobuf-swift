@@ -37,12 +37,12 @@ namespace google {
                     explicit ExtensionGenerator(string classname, const FieldDescriptor* descriptor);
                     ~ExtensionGenerator();
                     
-                    void GenerateMembersSource(io::Printer* printer);
-                    void GenerateMembersSourceExtensions(io::Printer* printer, string fileClass);
-                    void GenerateFieldsSource(io::Printer* printer);
-                    void GenerateFieldsGetterSource(io::Printer* printer, string rootclassname);
-                    void GenerateInitializationSource(io::Printer* printer);
-                    void GenerateRegistrationSource(io::Printer* printer);
+                    void GenerateMembersSource(io::Printer* printer, string packageFieldPrefix);
+                    void GenerateMembersSourceExtensions(io::Printer* printer, string fileClass, string packageFieldPrefix);
+                    void GenerateFieldsSource(io::Printer* printer, string packageFieldPrefix);
+                    void GenerateFieldsGetterSource(io::Printer* printer, string rootclassname, string packageFieldPrefix);
+                    void GenerateInitializationSource(io::Printer* printer, string packageFieldPrefix);
+                    void GenerateRegistrationSource(io::Printer* printer, string packageFieldPrefix);
                     
                 private:
                     string classname_;
